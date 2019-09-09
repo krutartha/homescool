@@ -1,4 +1,4 @@
-package com.android.homescool;
+package com.example.homescool;
 
 import org.junit.Test;
 
