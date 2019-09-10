@@ -1,4 +1,4 @@
-package com.android.homescool.ui.home;
+package com.android.homescool.ui.findpapers;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,17 +14,17 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.android.homescool.R;
 
-public class HomeFragment extends Fragment {
+public class FindpapersFragment extends Fragment {
 
-    private HomeViewModel homeViewModel;
+    private FindpapersViewModel findpapersViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
-                ViewModelProviders.of(this).get(HomeViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_home, container, false);
-        final TextView textView = root.findViewById(R.id.text_home);
-        homeViewModel.getText().observe(this, new Observer<String>() {
+        findpapersViewModel =
+                ViewModelProviders.of(this).get(FindpapersViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_discussion, container, false);
+        final TextView textView = root.findViewById(R.id.text_dashboard);
+        findpapersViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);

@@ -1,16 +1,16 @@
-package com.android.homescool.ui.notifications;
+package com.android.homescool.ui.findtextbooks;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class NotificationsViewModel extends ViewModel {
+public class FindtextbooksViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public NotificationsViewModel() {
+    public FindtextbooksViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is notifications fragment");
+        mText.setValue("This is find textbooks fragment");
     }
 
     public LiveData<String> getText() {

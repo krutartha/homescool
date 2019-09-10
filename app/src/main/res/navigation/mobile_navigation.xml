@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.android.homescool.ui.home.HomeFragment"
+        android:name="com.android.homescool.ui.discussions.DiscusionsFragment"
         android:label="@string/title_discussions"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_findpapers" />
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.android.homescool.ui.dashboard.DashboardFragment"
+        android:name="com.android.homescool.ui.findpapers.FindpapersFragment"
         android:label="@string/title_fpapers"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_discussion" />
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.android.homescool.ui.notifications.NotificationsFragment"
+        android:name="com.android.homescool.ui.findtextbooks.FindtextbooksFragment"
         android:label="@string/title_ftextbooks"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_findtextbooks" />
 </navigation>
