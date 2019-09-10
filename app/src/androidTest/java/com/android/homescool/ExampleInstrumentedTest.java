@@ -1,4 +1,4 @@
-package com.example.homescool;
+package com.android.homescool;
 
 import android.content.Context;
 
