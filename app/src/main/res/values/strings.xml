@@ -3,4 +3,5 @@
     <string name="title_discussions">Discussions</string>
     <string name="title_fpapers">Find Papers</string>
     <string name="title_ftextbooks">Find Textbooks</string>
+    <string name="title_activity_login">LoginActivity</string>
 </resources>
