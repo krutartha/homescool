@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">homescool</string>
+    <string name="title_discussions">Discussions</string>
+    <string name="title_fpapers">Find Papers</string>
+    <string name="title_ftextbooks">Find Textbooks</string>
+</resources>
