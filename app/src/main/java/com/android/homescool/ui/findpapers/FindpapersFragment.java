@@ -22,7 +22,7 @@ public class FindpapersFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         findpapersViewModel =
                 ViewModelProviders.of(this).get(FindpapersViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_discussion, container, false);
+        View root = inflater.inflate(R.layout.fragment_findpapers, container, false);
         final TextView textView = root.findViewById(R.id.text_dashboard);
         findpapersViewModel.getText().observe(this, new Observer<String>() {
             @Override

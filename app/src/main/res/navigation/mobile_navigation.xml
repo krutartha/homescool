@@ -9,13 +9,13 @@
         android:id="@+id/navigation_home"
         android:name="com.android.homescool.ui.discussions.DiscusionsFragment"
         android:label="@string/title_discussions"
-        tools:layout="@layout/fragment_findpapers" />
+        tools:layout="@layout/fragment_discussions" />
 
     <fragment
         android:id="@+id/navigation_dashboard"
         android:name="com.android.homescool.ui.findpapers.FindpapersFragment"
         android:label="@string/title_fpapers"
-        tools:layout="@layout/fragment_discussion" />
+        tools:layout="@layout/fragment_findpapers" />
 
     <fragment
         android:id="@+id/navigation_notifications"

@@ -21,12 +21,17 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.IgnoreExtraProperties;
 
 public class LoginActivity extends BaseActivity implements
         View.OnClickListener {
 
     private static final String TAG = "GoogleActivity";
     private static final int RC_SIGN_IN = 9001;
+    private DatabaseReference mDatabase;
+
 
     // [START declare_auth]
     private FirebaseAuth mAuth;
@@ -119,6 +124,8 @@ public class LoginActivity extends BaseActivity implements
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            mDatabase = FirebaseDatabase.getInstance().getReference();
+                            writeNewUser(user.getUid(), user.getDisplayName(), user.getEmail());
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
@@ -196,5 +203,30 @@ public class LoginActivity extends BaseActivity implements
         } else if (i == R.id.proceedButton) {
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
         }
+    }
+
+    @IgnoreExtraProperties
+    public class User {
+
+        public String displayname;
+        public String email;
+
+        public User() {
+            // Default constructor required for calls to DataSnapshot.getValue(User.class)
+        }
+
+        public User(String displayname, String email) {
+            this.displayname = displayname;
+            this.email = email;
+        }
+
+
+
+    }
+
+    private void writeNewUser(String userId, String name, String email) {
+        User user = new User(name, email);
+
+        mDatabase.child("users").child(userId).setValue(user);
     }
 }

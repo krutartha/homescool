@@ -1,42 +1,34 @@
 {
   "project_info": {
-    "project_number": "651238987302",
-    "firebase_url": "https://homescool-e408e.firebaseio.com",
-    "project_id": "homescool-e408e",
-    "storage_bucket": "homescool-e408e.appspot.com"
+    "project_number": "47165042040",
+    "firebase_url": "https://homescool-34440.firebaseio.com",
+    "project_id": "homescool-34440",
+    "storage_bucket": "homescool-34440.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:651238987302:android:56b3a7767913521f7138e7",
+        "mobilesdk_app_id": "1:47165042040:android:fa433caed469a556132c8d",
         "android_client_info": {
           "package_name": "com.android.homescool"
         }
       },
       "oauth_client": [
         {
-          "client_id": "651238987302-fj9i1h4gavvhuhbqdcnlak3ekrn1264u.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.android.homescool",
-            "certificate_hash": "3178f62ac6505ac965ddd9747a0982dd58054530"
-          }
-        },
-        {
-          "client_id": "651238987302-8imfcombq85los3bsegst63ujpp0rdtc.apps.googleusercontent.com",
+          "client_id": "47165042040-qtkr9accnent6ure3ic13l4evugla66a.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCBSIdT9ZYMDCeUwj12GSjrmQHYfaAhMm4"
+          "current_key": "AIzaSyDzzhKmyVY0TAxtnBrQRFums9BLpPcwUsE"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "651238987302-8imfcombq85los3bsegst63ujpp0rdtc.apps.googleusercontent.com",
+              "client_id": "47165042040-u14h7gencnvqmi8qf91906nsrpc222hc.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

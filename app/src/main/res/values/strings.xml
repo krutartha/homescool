@@ -3,5 +3,6 @@
     <string name="title_discussions">Discussions</string>
     <string name="title_fpapers">Find Papers</string>
     <string name="title_ftextbooks">Find Textbooks</string>
+    <string name="server_client_id">47165042040-l33klr6jb32pm9406ofpacv9tgvlssj9.apps.googleusercontent.com</string>
     <string name="title_activity_login">LoginActivity</string>
 </resources>
