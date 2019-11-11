@@ -1,32 +1,24 @@
 package com.android.homescool.ui.discussions;
 
 import android.os.Bundle;
-import android.provider.DocumentsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.android.homescool.R;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.IgnoreExtraProperties;
-import com.google.firebase.database.ServerValue;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.auth.User;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -61,15 +53,7 @@ public class DiscusionsFragment extends Fragment {
             }
 
         });
-
-
         return root;
-
-
-
-
-
-
     }
 
     @IgnoreExtraProperties
@@ -87,9 +71,6 @@ public class DiscusionsFragment extends Fragment {
             this.text = text;
             this.timestamp = timestamp;
         }
-
-
-
     }
 
     private void writeNewDiscussion(String userId, String text, String timestamp) {
@@ -98,7 +79,6 @@ public class DiscusionsFragment extends Fragment {
         post.put("from", userId);
         post.put("text", text);
         post.put("timestamp", timestamp);
-
 
         mDatabase.child("discussion").push().setValue(discussion);
     }

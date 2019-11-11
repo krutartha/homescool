@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "47165042040-l33klr6jb32pm9406ofpacv9tgvlssj9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.android.homescool",
+            "certificate_hash": "284de6c8f039f44cc322849193b6849d0b1a12a7"
+          }
+        },
+        {
           "client_id": "47165042040-qtkr9accnent6ure3ic13l4evugla66a.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -28,7 +36,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "47165042040-u14h7gencnvqmi8qf91906nsrpc222hc.apps.googleusercontent.com",
+              "client_id": "47165042040-hbhesdecol837o58bb5cj7tg239o83s8.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
