@@ -10,7 +10,7 @@ public class FindpapersViewModel extends ViewModel {
 
     public FindpapersViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is find papers fragment");
+        //mText.setValue("Find Question Papers");
     }
 
     public LiveData<String> getText() {
