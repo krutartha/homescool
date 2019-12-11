@@ -27,7 +27,6 @@
 
         </LinearLayout>
 
-
     </androidx.cardview.widget.CardView>
 
     <RelativeLayout
@@ -35,7 +34,7 @@
         android:layout_height="match_parent">
 
         <androidx.core.widget.NestedScrollView
-            android:id="@+id/scroll_view"
+            android:id="@+id/scroll_view_discussion"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 

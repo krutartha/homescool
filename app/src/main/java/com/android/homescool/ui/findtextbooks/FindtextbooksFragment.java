@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.android.homescool.R;
+import com.google.firebase.ml.vision.FirebaseVision;
 
 public class FindtextbooksFragment extends Fragment {
 
