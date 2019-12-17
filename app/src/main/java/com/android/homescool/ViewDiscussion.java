@@ -9,6 +9,11 @@ import android.util.Base64;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 public class ViewDiscussion extends AppCompatActivity {
@@ -20,6 +25,10 @@ public class ViewDiscussion extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_discussion);
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String uid = user.getUid();
+        String img = user.getPhotoUrl().toString();
 
         Intent intent = getIntent();
         String imageBitmap = intent.getStringExtra("imageBitmap");
@@ -39,6 +48,10 @@ public class ViewDiscussion extends AppCompatActivity {
         tagsDiscussion.setText(tags);
         titleDiscussion.setText(title);
         subjectDiscussion.setText(subject);
+//        Glide.with(getApplicationContext()).load(img)
+//                .thumbnail(0.5f)
+//                .diskCacheStrategy(DiskCacheStrategy.ALL)
+//                .into(imageDiscussion);
 
     }
 }

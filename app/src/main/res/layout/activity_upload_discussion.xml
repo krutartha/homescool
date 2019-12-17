@@ -63,11 +63,19 @@
         android:layout_height="wrap_content"
         android:id="@+id/add_pic_button"
         android:text="Add a picture"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Publish"
+        android:id="@+id/publish_discussion"
+        />
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/show_image"/>
+
+
 
 
 </LinearLayout>

@@ -28,9 +28,13 @@ public class UploadDiscussion extends AppCompatActivity implements AdapterView.O
 
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     String uid = user.getUid();
+    String url = user.getPhotoUrl().toString();
+    String name = user.getDisplayName();
+
+    Bitmap bit = null;
 
     Spinner spinner;
-    Button addPic;
+    Button addPic, publish;
     ImageView mImageLabel;
 
     private static final int REQUEST_IMAGE_CAPTURE = 111;
@@ -58,6 +62,7 @@ public class UploadDiscussion extends AppCompatActivity implements AdapterView.O
         spinner = findViewById(R.id.subjects_selector);
         titleDiscussion = findViewById(R.id.title_discussion);
         bodyDiscussion = findViewById(R.id.body_discussion);
+        publish = findViewById(R.id.publish_discussion);
 
         spinner.setOnItemSelectedListener(this);
 
@@ -78,6 +83,14 @@ public class UploadDiscussion extends AppCompatActivity implements AdapterView.O
 
         // attaching data adapter to spinner
         spinner.setAdapter(dataAdapter);
+
+
+        publish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                encodeBitmapAndSaveToFirebase(bit);
+            }
+        });
     }
 
 
@@ -100,25 +113,54 @@ public class UploadDiscussion extends AppCompatActivity implements AdapterView.O
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+//        int w = 1, h = 1;
+//
+//        Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
+//        Bitmap bmp = Bitmap.createBitmap(w, h, conf);
+
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == UploadPaper.RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             mImageLabel.setImageBitmap(imageBitmap);
-            encodeBitmapAndSaveToFirebase(imageBitmap);
+//            encodeBitmapAndSaveToFirebase(imageBitmap);
+            bit = imageBitmap;
+
         }
+
+
+
+
     }
 
+
     public void encodeBitmapAndSaveToFirebase(Bitmap bitmap) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        String imageEncoded = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
-        DatabaseReference ref = mDatabase.child("discussion").push();
-        ref.child("imageEncoded").setValue(imageEncoded);
-        ref.child("title").setValue(titleDiscussion.getText().toString());
-        ref.child("body").setValue(bodyDiscussion.getText().toString());
-        ref.child("tags").setValue(tagsDiscussion.getText().toString());
-        ref.child("subject").setValue(subject);
-        ref.child("from").setValue(uid);
+       if (bitmap == null){
+           DatabaseReference ref = mDatabase.child("discussion").push();
+           ref.child("imageEncoded").setValue("");
+           ref.child("title").setValue(titleDiscussion.getText().toString());
+           ref.child("body").setValue(bodyDiscussion.getText().toString());
+           ref.child("tags").setValue(tagsDiscussion.getText().toString());
+           ref.child("subject").setValue(subject);
+           ref.child("from").setValue(uid);
+           ref.child("userImg").setValue(url);
+           ref.child("displayName").setValue(name);
+       }
+
+       else{
+           ByteArrayOutputStream baos = new ByteArrayOutputStream();
+           bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+           String imageEncoded = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
+           DatabaseReference ref = mDatabase.child("discussion").push();
+           ref.child("imageEncoded").setValue(imageEncoded);
+           ref.child("title").setValue(titleDiscussion.getText().toString());
+           ref.child("body").setValue(bodyDiscussion.getText().toString());
+           ref.child("tags").setValue(tagsDiscussion.getText().toString());
+           ref.child("subject").setValue(subject);
+           ref.child("from").setValue(uid);
+           ref.child("userImg").setValue(url);
+           ref.child("displayName").setValue(name);
+       }
     }
 }
