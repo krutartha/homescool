@@ -38,6 +38,7 @@ public class UploadDiscussion extends AppCompatActivity implements AdapterView.O
     ImageView mImageLabel;
 
     private static final int REQUEST_IMAGE_CAPTURE = 111;
+    public static boolean hasImage;
 
     private DatabaseReference mDatabase;
 
@@ -137,6 +138,7 @@ public class UploadDiscussion extends AppCompatActivity implements AdapterView.O
 
     public void encodeBitmapAndSaveToFirebase(Bitmap bitmap) {
        if (bitmap == null){
+            hasImage = false;
            DatabaseReference ref = mDatabase.child("discussion").push();
            ref.child("imageEncoded").setValue("");
            ref.child("title").setValue(titleDiscussion.getText().toString());
@@ -146,9 +148,13 @@ public class UploadDiscussion extends AppCompatActivity implements AdapterView.O
            ref.child("from").setValue(uid);
            ref.child("userImg").setValue(url);
            ref.child("displayName").setValue(name);
+           ref.child("upvote").setValue("0");
+           ref.child("downvote").setValue("0");
        }
 
        else{
+
+           hasImage = true;
            ByteArrayOutputStream baos = new ByteArrayOutputStream();
            bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
            String imageEncoded = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
@@ -161,6 +167,8 @@ public class UploadDiscussion extends AppCompatActivity implements AdapterView.O
            ref.child("from").setValue(uid);
            ref.child("userImg").setValue(url);
            ref.child("displayName").setValue(name);
+           ref.child("upvote").setValue(0);
+           ref.child("downvote").setValue(0);
        }
     }
 }

@@ -22,6 +22,7 @@
         <activity android:name=".ViewDiscussion"></activity>
         <activity android:name=".UploadPaper" />
         <activity android:name=".UploadDiscussion" />
+        <activity android:name=".ViewImageInDiscussion"/>
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
