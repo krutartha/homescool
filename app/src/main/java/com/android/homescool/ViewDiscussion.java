@@ -113,6 +113,7 @@ public class ViewDiscussion extends AppCompatActivity {
                     int inititalDownvote = Integer.parseInt(downvoteNumberView.getText().toString());
                     String newDownvote = Integer.toString(inititalDownvote-1);
                     downvoteNumberView.setText(newDownvote);
+                    ref.child(id).child("downvote").setValue(newDownvote);
 
                 }
 
@@ -141,6 +142,7 @@ public class ViewDiscussion extends AppCompatActivity {
                 int inititalUpvote = Integer.parseInt(upvoteNumberView.getText().toString());
                 String newUpvote = Integer.toString(inititalUpvote-1);
                 upvoteNumberView.setText(newUpvote);
+                ref.child(id).child("upvote").setValue(newUpvote);
                 downvote.setEnabled(false);
                 upvote.setEnabled(true);
                 hasDownvoted = true;
