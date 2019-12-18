@@ -46,6 +46,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.IgnoreExtraProperties;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -107,20 +108,31 @@ public class DiscusionsFragment extends Fragment {
 
 
         ref.orderByKey().addListenerForSingleValueEvent(new ValueEventListener() {
+            ArrayList<DataSnapshot> items = new ArrayList<DataSnapshot>();
+            ArrayList<DataSnapshot> reverseItems = new ArrayList<DataSnapshot>();
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        String id = snapshot.getKey().toString();
-                        String imageEncoded= snapshot.child("imageEncoded").getValue().toString();
-                        String subject = snapshot.child("subject").getValue().toString();
-                        String tags = snapshot.child("tags").getValue().toString();
-                        String title= snapshot.child("title").getValue().toString();
-                        String userImg = snapshot.child("userImg").getValue().toString();
-                        String name = snapshot.child("displayName").getValue().toString();
-                        String body = snapshot.child("body").getValue().toString();
-                        String upvotes = snapshot.child("upvote").getValue().toString();
-                        String downvotes = snapshot.child("downvote").getValue().toString();
-                        displayDiscussion(id, imageEncoded, subject,tags, title, userImg, name, body, upvotes, downvotes);
+
+                        items.add(snapshot);
+                }
+
+                for(int i = items.size() - 1; i>=0; i--){
+                    reverseItems.add(items.get(i));
+                }
+
+                for(int i =0; i < items.size(); i++){
+                    String id = reverseItems.get(i).getKey().toString();
+                    String imageEncoded= reverseItems.get(i).child("imageEncoded").getValue().toString();
+                    String subject = reverseItems.get(i).child("subject").getValue().toString();
+                    String tags = reverseItems.get(i).child("tags").getValue().toString();
+                    String title= reverseItems.get(i).child("title").getValue().toString();
+                    String userImg = reverseItems.get(i).child("userImg").getValue().toString();
+                    String name = reverseItems.get(i).child("displayName").getValue().toString();
+                    String body = reverseItems.get(i).child("body").getValue().toString();
+                    String upvotes = reverseItems.get(i).child("upvote").getValue().toString();
+                    String downvotes = reverseItems.get(i).child("downvote").getValue().toString();
+                    displayDiscussion(id, imageEncoded, subject,tags, title, userImg, name, body, upvotes, downvotes);
                 }
             }
             @Override
