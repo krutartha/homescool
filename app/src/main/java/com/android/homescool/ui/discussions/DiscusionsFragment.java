@@ -177,26 +177,120 @@ public class DiscusionsFragment extends Fragment {
         mDatabase.child("discussion").push().setValue(discussion);
     }
 
-    public void displayDiscussion(final String imageEncoded, final String subject, final String tags, final String title, final String userImg, final String name, final String body){
-        byte[] decodedByteArray = android.util.Base64.decode(imageEncoded, Base64.DEFAULT);
+    public void displayDiscussion(final String imageEncoded, final String subject, final String tags, String title, final String userImg, final String name, final String body){
+        byte[] decodedByteArray = Base64.decode(imageEncoded, Base64.DEFAULT);
         Bitmap imageBitmap = BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.length);
 
-        RelativeLayout cardView = new RelativeLayout(getContext());
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 300);
+        LinearLayout horizontalLayout = new LinearLayout(getContext());
+        horizontalLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        horizontalLayout.setOrientation(LinearLayout.HORIZONTAL);
+
+        LinearLayout userLayout = new LinearLayout(getContext());
+        userLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        userLayout.setOrientation(LinearLayout.VERTICAL);
+
+        horizontalLayout.addView(userLayout);
+
+        LinearLayout discussionLayout = new LinearLayout(getContext());
+        discussionLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        discussionLayout.setOrientation(LinearLayout.VERTICAL);
+
+        horizontalLayout.addView(discussionLayout);
+
+//        
+
+
+
+
+
+        CardView cardView = new CardView(getContext());
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.setMargins(10,25,10,10);
         cardView.setLayoutParams(params);
         cardView.setElevation(5);
 //        cardView.setCardElevation(10);
 //        cardView.setRadius(5);
 
-        LinearLayout newLayout = new LinearLayout(getContext());
-        newLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        cardView.addView(horizontalLayout);
+
+        ImageView userImage = new ImageView(getContext());
+        LinearLayout.LayoutParams userImageParams = new LinearLayout.LayoutParams(100, 100);
+        userImageParams.setMargins(20, 20, 20, 20);
+        userImage.setLayoutParams(userImageParams);
+
+        userImage.setId(R.id.userImage);
+        userImage.setScaleType(ImageView.ScaleType.FIT_XY);
+
+        Glide.with(getActivity().getApplicationContext()).load(userImg)
+                .thumbnail(0.5f)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .apply(RequestOptions.circleCropTransform())
+                .into(userImage);
+
+        userLayout.addView(userImage);
+
+        TextView userName = new TextView(getContext());
+        LinearLayout.LayoutParams userNameParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        userName.setLayoutParams(userNameParams);
+        userName.setTextSize(10);
+        userNameParams.setMargins(40,10,20,5);
+        userName.setText(name);
+        userLayout.addView(userName);
+
+        TextView titleText = new TextView(getContext());
+        LinearLayout.LayoutParams titleParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        titleText.setLayoutParams(titleParams);
+        titleParams.setMargins(20, 20, 20, 20);
+        titleText.setTextSize(16);
+        titleText.setMaxLines(2);
+        titleText.setTextColor(Color.parseColor("#1c1c1c"));
+        titleText.setText(title);
+        discussionLayout.addView(titleText);
+
+        TextView bodyText = new TextView(getContext());
+        LinearLayout.LayoutParams bodyParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        bodyText.setLayoutParams(bodyParams);
+        bodyParams.setMargins(20, 20, 20, 20);
+        bodyText.setTextSize(16);
+        bodyText.setMaxLines(4);
+        bodyText.setTextColor(Color.parseColor("#5e5e5e"));
+        bodyText.setText(body);
+        discussionLayout.addView(bodyText);
+
+        TextView subjectText = new TextView(getContext());
+        LinearLayout.LayoutParams subjectParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        subjectText.setLayoutParams(subjectParams);
+        subjectParams.setMargins(20, 20, 20, 20);
+        subjectText.setTextSize(14);
+        subjectText.setMaxLines(4);
+        subjectText.setTextColor(Color.parseColor("#5e5e5e"));
+        subjectText.setText(subject + ": " + tags);
+        discussionLayout.addView(subjectText);
+
+//        TextView tagsText = new TextView(getContext());
+//        LinearLayout.LayoutParams tagsParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//        tagsText.setLayoutParams(tagsParams);
+//        tagsParams.setMargins(20, 20, 20, 20);
+//        tagsText.setTextSize(14);
+//        tagsText.setMaxLines(4);
+//        tagsText.setTextColor(Color.parseColor("#5e5e5e"));
+//        tagsText.setText(tags);
+//        discussionLayout.addView(tagsText);
 
 
-        ImageView newImage = new ImageView(getContext());
-        newImage.setLayoutParams(new LinearLayout.LayoutParams(100, 100));
-        newImage.setId(R.id.userImage);
-        newImage.setScaleType(ImageView.ScaleType.FIT_XY);
+//        if(imageEncoded != null){
+//            ImageView discussionImage = new ImageView(getContext());
+//            LinearLayout.LayoutParams discussionImageParams = new LinearLayout.LayoutParams(300, 500);
+//            discussionImageParams.setMargins(20, 20, 20, 20);
+//            discussionImage.setLayoutParams(discussionImageParams);
+//
+//            discussionImage.setScaleType(ImageView.ScaleType.FIT_XY);
+//
+//            discussionImage.setImageBitmap(imageBitmap);
+//
+//            discussionLayout.addView(discussionImage);
+//        }
+
 
 //        TextView usernameView = new TextView(getContext());
 //        LinearLayout.LayoutParams userParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -285,14 +379,14 @@ public class DiscusionsFragment extends Fragment {
             newText.setText(newText5Text);
         }
 
-        newText2.setLayoutParams(textParams2);
-        newText3.setLayoutParams(textParams3);
-        newText4.setLayoutParams(textParams4);
-        newText5.setLayoutParams(textParams5);
-        newText2.setText(body);
-        newText3.setText(subject);
-        newText4.setText(name);
-        newText5.setText(tags);
+//        newText2.setLayoutParams(textParams2);
+//        newText3.setLayoutParams(textParams3);
+//        newText4.setLayoutParams(textParams4);
+//        newText5.setLayoutParams(textParams5);
+//        newText2.setText(body);
+//        newText3.setText(subject);
+//        newText4.setText(name);
+//        newText5.setText(tags);
 //        usernameView.setText(name);
 
         if (newText2.getText().toString().length()>54){
@@ -308,11 +402,7 @@ public class DiscusionsFragment extends Fragment {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String img = user.getPhotoUrl().toString();
 
-        Glide.with(getActivity().getApplicationContext()).load(userImg)
-                .thumbnail(0.5f)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .apply(RequestOptions.circleCropTransform())
-                .into(newImage);
+        
 
 //        newImage.setImageBitmap(imageBitmap);
 
@@ -327,12 +417,11 @@ public class DiscusionsFragment extends Fragment {
             }
         });
 
-        newLayout2.addView(newText);
-        newLayout2.addView(newText2);
-        newLayout2.addView(newText3);
-        newLayout.addView(newImage);
-        newLayout.addView(newLayout2);
-        cardView.addView(newLayout);
+//        newLayout2.addView(newText);
+//        newLayout2.addView(newText2);
+//        newLayout2.addView(newText3);
+//        horizontalLayout.addView(newLayout2);
+
         linearLayout.addView(cardView);
 
 
