@@ -50,13 +50,7 @@ public class ViewDiscussion extends AppCompatActivity {
         final String upvoteNumber = intent.getStringExtra("upvoteNumber");
         final String downVoteNumber = intent.getStringExtra("downvoteNumber");
 
-        if (imageBitmap == null) {
-             hasImage = false;
-        }
 
-        else{
-            hasImage = true;
-        }
 
 
         byte[] decodedByteArray = android.util.Base64.decode(imageBitmap, Base64.DEFAULT);
@@ -72,13 +66,16 @@ public class ViewDiscussion extends AppCompatActivity {
         upvoteNumberView = findViewById(R.id.discussion_upvoteNumber);
         downvoteNumberView = findViewById(R.id.discussion_downvoteNumber);
 
-        if (hasImage == false) {
+
+        if (imageBitmap.length()<=0){
             imageDiscussion.setVisibility(View.GONE);
         }
 
         else{
             imageDiscussion.setImageBitmap(imageBit);
         }
+
+
 
         titleDiscussion.setText(title);
         subjectDiscussion.setText(subject + ": " + tags);

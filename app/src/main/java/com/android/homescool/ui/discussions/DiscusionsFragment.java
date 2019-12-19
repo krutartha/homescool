@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -123,6 +124,7 @@ public class DiscusionsFragment extends Fragment {
 
                 for(int i =0; i < items.size(); i++){
                     String id = reverseItems.get(i).getKey().toString();
+                    Object imgValue = reverseItems.get(i).child("imageEncoded").getValue();
                     String imageEncoded= reverseItems.get(i).child("imageEncoded").getValue().toString();
                     String subject = reverseItems.get(i).child("subject").getValue().toString();
                     String tags = reverseItems.get(i).child("tags").getValue().toString();
@@ -276,6 +278,7 @@ public class DiscusionsFragment extends Fragment {
         subjectText.setLayoutParams(subjectParams);
         subjectParams.setMargins(20, 20, 20, 20);
         subjectText.setTextSize(14);
+        subjectText.setTypeface(null, Typeface.BOLD);
         subjectText.setMaxLines(4);
         subjectText.setTextColor(Color.parseColor("#5e5e5e"));
         subjectText.setText(subject + ": " + tags);
