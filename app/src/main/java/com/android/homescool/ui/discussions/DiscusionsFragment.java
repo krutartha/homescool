@@ -307,6 +307,7 @@ public class DiscusionsFragment extends Fragment {
                 if(hasImage == true){
                     intent.putExtra("imageBitmap", imageEncoded);
                 }
+                intent.putExtra("name", name);
 
 
 
