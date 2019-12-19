@@ -10,6 +10,7 @@ import android.os.PersistableBundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.vision.text.Line;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -237,13 +239,15 @@ public class ViewDiscussion extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
 
+                    final String commentId = snapshot.getKey().toString();
+
                     for(DataSnapshot newSnapshot : snapshot.getChildren()){
 
 
                         String userImg = newSnapshot.child("userImage").getValue().toString();
                         String name = newSnapshot.child("displayName").getValue().toString();
                         String comment = newSnapshot.child("comment").getValue().toString();
-                        displayComments(name, comment, userImg);
+                        displayComments(id, commentId, name, comment, userImg);
 
                     }
 
@@ -262,7 +266,7 @@ public class ViewDiscussion extends AppCompatActivity {
 
 
 
-    public void displayComments(final String name, final String comment, final String userPhoto){
+    public void displayComments(final String discussionId, final String commentId, final String name, final String comment, final String userPhoto){
 
         LinearLayout horizontalLayout = new LinearLayout(getApplicationContext());
         horizontalLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -274,13 +278,13 @@ public class ViewDiscussion extends AppCompatActivity {
 
         horizontalLayout.addView(userLayout);
 
-        LinearLayout commentLayout = new LinearLayout(getApplicationContext());
-        commentLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        final LinearLayout commentLayout = new LinearLayout(getApplicationContext());
+        commentLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         commentLayout.setOrientation(LinearLayout.VERTICAL);
 
         horizontalLayout.addView(commentLayout);
 
-        CardView cardView = new CardView(getApplicationContext());
+        final CardView cardView = new CardView(getApplicationContext());
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.setMargins(10,10,10,10);
         cardView.setLayoutParams(params);
@@ -322,6 +326,94 @@ public class ViewDiscussion extends AppCompatActivity {
         bodyText.setTextColor(Color.parseColor("#5e5e5e"));
         bodyText.setText(comment);
         commentLayout.addView(bodyText);
+
+        final Button replyButton = new Button(getApplicationContext());
+        LinearLayout.LayoutParams replyButtonParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        replyButton.setLayoutParams(replyButtonParams);
+        replyButtonParams.setMargins(10, 10, 10, 10);
+        replyButtonParams.gravity = Gravity.END;
+        replyButton.setBackgroundColor(Color.TRANSPARENT);
+        replyButton.setText("Reply");
+
+        commentLayout.addView(replyButton);
+
+        replyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                LinearLayout replyLayout = new LinearLayout(getApplicationContext());
+                replyLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                replyLayout.setOrientation(LinearLayout.VERTICAL);
+
+                commentLayout.addView(replyLayout);
+
+                replyButton.setVisibility(View.GONE);
+                final EditText replyEditText = new EditText(getApplicationContext());
+                LinearLayout.LayoutParams replyTextParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                replyEditText.setHint("Enter your reply");
+                replyEditText.setTextSize(15);
+                replyEditText.setPadding(3, 20, 20, 20);
+                replyEditText.setMinimumHeight(100);
+                replyEditText.setBackgroundColor(Color.TRANSPARENT);
+                replyEditText.setLayoutParams(replyTextParams);
+
+                replyLayout.addView(replyEditText);
+
+                final Button sendReply = new Button(getApplicationContext());
+                LinearLayout.LayoutParams sendReplyParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                sendReply.setLayoutParams(sendReplyParams);
+                sendReply.setText("Send Reply");
+                sendReplyParams.gravity = Gravity.END;
+                sendReply.setVisibility(View.GONE);
+
+                replyLayout.addView(sendReply);
+                replyEditText.addTextChangedListener(new TextWatcher() {
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+
+                        if(replyEditText.getText().toString().matches("")){
+                            sendReply.setVisibility(View.GONE);
+                            replyEditText.setVisibility(View.GONE);
+                            replyButton.setVisibility(View.VISIBLE);
+                        }
+                    }
+
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start,
+                                                  int count, int after) {
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start,
+                                              int before, int count) {
+                        sendReply.setVisibility(View.VISIBLE);
+
+                    }
+                });
+
+                sendReply.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        final Uri usrImage = user.getPhotoUrl();
+                        final String userName = user.getDisplayName();
+
+                        String reply = replyEditText.getText().toString();
+                        DatabaseReference newRef = ref.child(discussionId).child("comments").child(commentId);
+                        DatabaseReference finalRef = newRef.push();
+                        finalRef.child("displayName").setValue(userName);
+                        finalRef.child("comment").setValue(reply);
+                        finalRef.child("userImage").setValue(usrImage.toString());
+                        sendReply.setVisibility(View.GONE);
+                        replyEditText.setVisibility(View.GONE);
+                        replyButton.setVisibility(View.VISIBLE);
+
+                    }
+                });
+            }
+        });
 
         showCommentsLayout.addView(cardView);
 

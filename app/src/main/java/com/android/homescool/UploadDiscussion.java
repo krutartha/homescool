@@ -3,6 +3,7 @@ package com.android.homescool;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -22,6 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +38,7 @@ public class UploadDiscussion extends AppCompatActivity implements AdapterView.O
     String name = user.getDisplayName();
 
     Bitmap bit = null;
+    Bitmap imageBitmap = null;
 
     Spinner spinner;
     Button addPic, publish;
@@ -157,7 +160,7 @@ public class UploadDiscussion extends AppCompatActivity implements AdapterView.O
             case 0:
                 if (resultCode == UploadDiscussion.RESULT_OK) {
                     Bundle extras = data.getExtras();
-                    Bitmap imageBitmap = (Bitmap) extras.get("data");
+                    imageBitmap = (Bitmap) extras.get("data");
                     mImageLabel.setImageBitmap(imageBitmap);
                     bit = imageBitmap;
 
@@ -167,13 +170,23 @@ public class UploadDiscussion extends AppCompatActivity implements AdapterView.O
             case 1:
                 if(resultCode == UploadDiscussion.RESULT_OK){
                     Uri imageUri = data.getData();
-                    try {
-                        Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-                        mImageLabel.setImageBitmap(imageBitmap);
-                        bit = imageBitmap;
-                    } catch (IOException e) {
+                    try{
+                        InputStream image_stream;
+                        try {
+                            image_stream = getApplicationContext().getContentResolver().openInputStream(imageUri);
+                            imageBitmap = BitmapFactory.decodeStream(image_stream);
+                            mImageLabel.setImageBitmap(imageBitmap);
+                            bit = imageBitmap;
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    catch(Exception e){
                         e.printStackTrace();
                     }
+
+                    bit = imageBitmap;
                 }
                 break;
         }
