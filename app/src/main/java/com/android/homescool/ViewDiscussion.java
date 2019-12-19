@@ -37,9 +37,6 @@ public class ViewDiscussion extends AppCompatActivity {
         setContentView(R.layout.activity_view_discussion);
 
 
-
-
-
         Intent intent = getIntent();
         final String imageBitmap = intent.getStringExtra("imageBitmap");
         final String id = intent.getStringExtra("id");

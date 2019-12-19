@@ -1,7 +1,9 @@
 package com.android.homescool;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
@@ -19,9 +21,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class UploadDiscussion extends AppCompatActivity implements AdapterView.OnItemSelectedListener  {
@@ -55,7 +59,30 @@ public class UploadDiscussion extends AppCompatActivity implements AdapterView.O
         addPic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onLaunchCamera();
+//                onLaunchCamera();
+
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(UploadDiscussion.this);
+                builder1.setMessage("How would you like to add an image?");
+                builder1.setCancelable(true);
+
+                builder1.setPositiveButton(
+                        "Choose an image",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                onLaunchGallery();
+                            }
+                        });
+
+                builder1.setNegativeButton(
+                        "Take an image",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                onLaunchCamera();
+                            }
+                        });
+
+                AlertDialog alert11 = builder1.create();
+                alert11.show();
             }
         });
         mImageLabel = findViewById(R.id.show_image);
@@ -108,26 +135,47 @@ public class UploadDiscussion extends AppCompatActivity implements AdapterView.O
     public void onLaunchCamera() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getApplicationContext().getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            startActivityForResult(takePictureIntent, 0);
+        }
+    }
+
+    public void onLaunchGallery() {
+        Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+        if (pickPhoto.resolveActivity(getApplicationContext().getPackageManager()) != null) {
+            startActivityForResult(pickPhoto, 1);
         }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-//        int w = 1, h = 1;
-//
-//        Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
-//        Bitmap bmp = Bitmap.createBitmap(w, h, conf);
 
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == UploadPaper.RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            mImageLabel.setImageBitmap(imageBitmap);
-//            encodeBitmapAndSaveToFirebase(imageBitmap);
-            bit = imageBitmap;
+        switch (requestCode){
+            case 0:
+                if (resultCode == UploadDiscussion.RESULT_OK) {
+                    Bundle extras = data.getExtras();
+                    Bitmap imageBitmap = (Bitmap) extras.get("data");
+                    mImageLabel.setImageBitmap(imageBitmap);
+                    bit = imageBitmap;
 
+                }
+                break;
+
+            case 1:
+                if(resultCode == UploadDiscussion.RESULT_OK){
+                    Uri imageUri = data.getData();
+                    try {
+                        Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                        mImageLabel.setImageBitmap(imageBitmap);
+                        bit = imageBitmap;
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
         }
 
 
@@ -136,39 +184,22 @@ public class UploadDiscussion extends AppCompatActivity implements AdapterView.O
     }
 
 
+
+
     public void encodeBitmapAndSaveToFirebase(Bitmap bitmap) {
-       if (bitmap == null){
-            hasImage = false;
-           DatabaseReference ref = mDatabase.child("discussion").push();
-           ref.child("imageEncoded").setValue("");
-           ref.child("title").setValue(titleDiscussion.getText().toString());
-           ref.child("body").setValue(bodyDiscussion.getText().toString());
-           ref.child("tags").setValue(tagsDiscussion.getText().toString());
-           ref.child("subject").setValue(subject);
-           ref.child("from").setValue(uid);
-           ref.child("userImg").setValue(url);
-           ref.child("displayName").setValue(name);
-           ref.child("upvote").setValue("0");
-           ref.child("downvote").setValue("0");
-       }
-
-       else{
-
-           hasImage = true;
-           ByteArrayOutputStream baos = new ByteArrayOutputStream();
-           bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-           String imageEncoded = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
-           DatabaseReference ref = mDatabase.child("discussion").push();
-           ref.child("imageEncoded").setValue(imageEncoded);
-           ref.child("title").setValue(titleDiscussion.getText().toString());
-           ref.child("body").setValue(bodyDiscussion.getText().toString());
-           ref.child("tags").setValue(tagsDiscussion.getText().toString());
-           ref.child("subject").setValue(subject);
-           ref.child("from").setValue(uid);
-           ref.child("userImg").setValue(url);
-           ref.child("displayName").setValue(name);
-           ref.child("upvote").setValue(0);
-           ref.child("downvote").setValue(0);
-       }
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        String imageEncoded = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
+        DatabaseReference ref = mDatabase.child("discussion").push();
+        ref.child("imageEncoded").setValue(imageEncoded);
+        ref.child("title").setValue(titleDiscussion.getText().toString());
+        ref.child("body").setValue(bodyDiscussion.getText().toString());
+        ref.child("tags").setValue(tagsDiscussion.getText().toString());
+        ref.child("subject").setValue(subject);
+        ref.child("from").setValue(uid);
+        ref.child("userImg").setValue(url);
+        ref.child("displayName").setValue(name);
+        ref.child("upvote").setValue(0);
+        ref.child("downvote").setValue(0);
     }
 }
