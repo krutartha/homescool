@@ -10,7 +10,7 @@
     tools:context="com.pethoalpar.androidtesstwoocr.MainActivity">
 
     <Button
-        android:text="Button"
+        android:text="Convert physical text to digital text by taking a picture"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -18,7 +18,7 @@
         android:id="@+id/button" />
 
     <TextView
-        android:text="TextView"
+        android:text="Your digital text will appear here!"
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:layout_alignParentTop="true"
