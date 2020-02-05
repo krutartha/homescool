@@ -12,13 +12,13 @@
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
+
+        <ImageView
+            android:layout_width="300dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="50dp"
             android:layout_marginBottom="60dp"
-            android:text="LOGO"
-            android:textSize="40sp" />
+            android:src="@drawable/logo"/>
 
 
         <TextView
@@ -29,7 +29,8 @@
             android:fontFamily="sans-serif-thin"
             android:text="Sign in with Google to access Homescool! Are you ready to join the world's best community of students?"
             android:textColor="#000"
-            android:textSize="16sp" />
+            android:textStyle="bold"
+            android:textSize="18sp" />
 
 
         <TextView

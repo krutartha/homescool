@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,15 +18,12 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.android.homescool.R;
@@ -38,8 +34,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -91,7 +85,7 @@ public class DiscusionsFragment extends Fragment {
         setHasOptionsMenu(true);
 
         fabAddDiscussion = root.findViewById(R.id.fab_add_discussion);
-        linearLayout = (LinearLayout) root.findViewById(R.id.linear_layout_discussion);
+        linearLayout = root.findViewById(R.id.linear_layout_discussion);
         scrollView = root.findViewById(R.id.scroll_view_discussion);
         searchCard = root.findViewById(R.id.cardview_search_discussion);
         searchEditText = root.findViewById(R.id.edit_text_search_discussion);
@@ -285,11 +279,6 @@ public class DiscusionsFragment extends Fragment {
         discussionLayout.addView(subjectText);
 
 
-
-
-
-        
-
 //        newImage.setImageBitmap(imageBitmap);
 
         cardView.setOnClickListener(new View.OnClickListener() {
@@ -316,8 +305,6 @@ public class DiscusionsFragment extends Fragment {
         });
 
         linearLayout.addView(cardView);
-
-
 
     }
 
@@ -351,8 +338,8 @@ public class DiscusionsFragment extends Fragment {
         for (int i = 0; i < linearLayout.getChildCount(); i++) {
             final View child = linearLayout.getChildAt(i);
             child.setVisibility(View.GONE);
-            if (child instanceof RelativeLayout) {
-                LinearLayout linearlayout2 = (LinearLayout) ((RelativeLayout) child).getChildAt(0);
+            if (child instanceof CardView) {
+                LinearLayout linearlayout2 = (LinearLayout) ((CardView) child).getChildAt(0);
                 LinearLayout linearLayout3 = (LinearLayout) linearlayout2.getChildAt(1);
                 TextView textView1 = (TextView) linearLayout3.getChildAt(0);
                 TextView textView2 = (TextView) linearLayout3.getChildAt(1);

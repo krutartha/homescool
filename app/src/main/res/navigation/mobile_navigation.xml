@@ -22,4 +22,5 @@
         android:name="com.android.homescool.ui.findtextbooks.FindtextbooksFragment"
         android:label="@string/title_ftextbooks"
         tools:layout="@layout/fragment_findtextbooks" />
+
 </navigation>
